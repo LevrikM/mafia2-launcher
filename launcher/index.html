@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mafia II Launcher</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Merriweather:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="launcher-container">
+        
+        <div class="title-bar">
+            <div class="title">MAFIA <span class="highlight" style="color: #7a0000;">II</span> ONLINE | LAUNCHER</div>
+            <div class="title-bar-buttons">
+                <button id="minimize-btn" class="title-btn">—</button> 
+                <button id="settings-btn" class="title-btn">&#9881;</button> 
+                <button id="close-btn" class="title-btn">X</button>
+            </div>
+        </div>
+
+        <div class="left-panel">
+            <h2>НОВОСТИ</h2>
+            <div class="updates-content" id="updates-content">
+                <p>Загрузка новостей...</p>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            
+            <button id="launch-game-btn" class="launch-button hidden">
+                Запустить
+            </button>
+            <button id="update-game-btn" class="launch-button hidden">
+                Обновить
+            </button>
+
+            <div id="setup-container" class="setup-container hidden">
+                <h3>Игра не найдена</h3>
+                <p id="setup-status-text">Папка для установки не выбрана.</p>
+                <button id="select-path-btn" class="btn-secondary">Выбрать папку</button>
+                <button id="start-download-btn" class="btn-primary" disabled>Начать установку</button>
+            </div>
+
+            <div id="download-container" class="download-container hidden">
+                <p>Идет "загрузка"...</p>
+                <div class="progress-bar-outline">
+                    <div id="progress-bar" class="progress-bar-inline"></div>
+                </div>
+                <p id="progress-text">0%</p>
+            </div>
+
+
+           <div class="social-links">
+                <a href="https://discord.com/" target="_blank" class="social-btn">Discord</a>
+                <a href="https://youtube.com/" target="_blank" class="social-btn">YouTube</a>
+                <a href="http://127.0.0.1:3000/site/index.html" target="_blank" class="social-btn">Website</a>
+            </div>
+            
+            <!-- <div class="launcher-credits">
+                <span>Launcher by LEVRO</span>
+                <span>v1.0.0</span>
+            </div> -->
+
+        </div>
+
+    </div>
+
+    <div id="settings-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <span id="close-modal-btn" class="modal-close-btn">X</span>
+            <h2>Настройки</h2>
+            <div class="setting-item">
+                <label>Текущий путь к игре:</label>
+                <p id="current-path-display">Не указан</p>
+                <button id="change-path-btn" class="btn-primary">Изменить путь</button>
+            </div>
+            <div class="setting-item checkbox-item">
+            <input type="checkbox" id="close-on-launch-check">
+            <label for="close-on-launch-check">Закрывать лаунчер при запуске игры</label>
+            </div>
+
+            <div class="setting-item">
+                <label>Параметры запуска:</label>
+                <input type="text" id="launch-args-input" placeholder="-windowed -noconsole ...">
+            </div>
+
+            <div class="setting-item">
+                <label>Сброс настроек</label>
+                <p class="setting-desc">Это сбросит путь к игре и все настройки лаунчера. Приложение перезагрузится.</p>
+                <button id="reset-settings-btn" class="btn-danger">Сбросить все настройки</button>
+            </div>
+            <div id="launch-error-msg" class="error-message hidden"></div>
+            <div class="launcher-credits">
+                <span>Launcher by LEVRO</span>
+                <span id="app-version">v1.0.0</span> 
+            </div>
+        </div>
+    </div>
+
+    <script>
+      window.require = require;
+    </script>
+    <script src="renderer.js"></script>
+</body>
+</html>

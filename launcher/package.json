@@ -1,0 +1,15 @@
+{
+  "name": "mafia2-launcher",
+  "version": "1.1.0",
+  "description": "Launcher for Mafia 2 ONLINE",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "LEVRO",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.0.0" 
+  }
+}
