@@ -26,6 +26,7 @@ const closeModalBtn = document.getElementById('close-modal-btn');
 const changePathBtn = document.getElementById('change-path-btn');
 const pathDisplay = document.getElementById('current-path-display');
 const errorMsg = document.getElementById('launch-error-msg');
+const gameVersionDisplay = document.getElementById('game-version-display');
 
 // Settings elements
 const closeOnLaunchCheck = document.getElementById('close-on-launch-check');
@@ -83,6 +84,8 @@ function updateUI(status) {
   downloadContainer.classList.add('hidden');
   errorMsg.classList.add('hidden');
 
+  gameVersionDisplay.textContent = '';
+
   switch (status.status) {
     case 'found':
       if (status.version === latestGameVersion) {
@@ -92,12 +95,17 @@ function updateUI(status) {
         updateGameBtn.textContent = `Обновить до ${latestGameVersion}`;
       }
       pathDisplay.textContent = `${status.path} (${status.version || '???'})`;
+      gameVersionDisplay.textContent = `Версия игры: ${status.version || 'оффлайн'}`;
       break;
     
     case 'folder_selected':
       setupContainer.classList.remove('hidden');
       setupStatusText.textContent = `Установить в: ${status.path}`;
       startDownloadBtn.disabled = false;
+      selectPathBtn.textContent = 'Изменить папку';
+      startDownloadBtn.style.backgroundColor = '#7a0000';
+      selectPathBtn.style.backgroundColor = '#7a0000';
+      
       selectPathBtn.textContent = 'Изменить папку';
       pathDisplay.textContent = 'Игра не установлена';
       break;
@@ -141,7 +149,7 @@ selectPathBtn.addEventListener('click', async () => {
 startDownloadBtn.addEventListener('click', () => {
   setupContainer.classList.add('hidden');
   downloadContainer.classList.remove('hidden');
-  ipcRenderer.send('start-fake-download');
+  ipcRenderer.send('start-fake-download', latestGameVersion);
 });
 
 changePathBtn.addEventListener('click', async () => {

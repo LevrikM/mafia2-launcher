@@ -114,7 +114,7 @@ ipcMain.on('launch-game', (event) => {
     exec(`"${settings.gamePath}" ${launchArgs}`, { cwd: path.dirname(settings.gamePath) }, (error) => {
       if (error) {
         console.error(`Ошибка запуска: ${error}`);
-        event.reply('launch-error', 'Не удалось запустить игру. Проверьте путь.');
+        event.reply('launch-error', 'Не удалось запустить игру. Проверьте путь или обратитесь в поддержку.');
       }
     });
     
@@ -171,38 +171,38 @@ ipcMain.handle('get-news', async () => {
         console.error('Ошибка загрузки новостей (HTTP):', error);
         
         if (error.message.includes('ERR_CONNECTION_REFUSED')) {
-            return { status: 'error', message: 'Не удалось подключиться к серверу (http://127.0.0.1:3000). Сайт запущен?' };
+            return { status: 'error', message: '<b>Не удалось подключиться к новостной ленте.</b> <br><small>Проверьте подключение к интернету и попробуйте снова. <br>Так-же возможно сервер оффлайн.</small>' };
         }
-        
-        return { status: 'error', message: 'Не удалось загрузить новости с сайта.' };
+
+        return { status: 'error', message: 'Не удалось загрузить новостую ленту.' };
     }
 });
 
-ipcMain.on('start-fake-download', (event) => {
-  const settings = loadSettings();
-  if (!settings.installPath) return;
+ipcMain.on('start-fake-download', (event, latestVersion) => {
+    const settings = loadSettings();
+    if (!settings.installPath) return;
 
-  let progress = 0;
-  const interval = setInterval(() => {
-    progress += Math.random() * 10;
-    if (progress > 100) progress = 100;
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.random() * 10;
+        if (progress > 100) progress = 100;
+        
+        event.reply('download-progress', progress);
 
-    event.reply('download-progress', progress);
-
-    if (progress === 100) {
-      clearInterval(interval);
-      const fakeGameExePath = path.join(settings.installPath, 'mafia2.exe');
-      saveSettings({ ...settings, gamePath: fakeGameExePath, currentVersion: BASE_INSTALL_VERSION });
-      event.reply('install-complete');
-    }
-  }, 300);
+        if (progress === 100) {
+            clearInterval(interval);
+            const fakeGameExePath = path.join(settings.installPath, 'mafia2.exe');
+            saveSettings({ ...settings, gamePath: fakeGameExePath, currentVersion: latestVersion || BASE_INSTALL_VERSION });
+            event.reply('install-complete'); 
+        }
+    }, 300);
 });
 
 ipcMain.handle('select-game-exe', async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog({
     title: 'Укажите путь к mafia2.exe',
     properties: ['openFile'],
-    filters: [{ name: 'Игра', extensions: ['exe'] }]
+    filters: [{ name: 'mafia2', extensions: ['exe'] }]
   });
 
   if (canceled) {

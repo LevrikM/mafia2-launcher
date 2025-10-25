@@ -38,8 +38,8 @@
             <div id="setup-container" class="setup-container hidden">
                 <h3>Игра не найдена</h3>
                 <p id="setup-status-text">Папка для установки не выбрана.</p>
-                <button id="select-path-btn" class="btn-secondary">Выбрать папку</button>
-                <button id="start-download-btn" class="btn-primary" disabled>Начать установку</button>
+                <button id="select-path-btn" class="btn-secondary" style="background-color: #7a0000;">Выбрать папку</button>
+                <button id="start-download-btn" class="btn-primary" disabled style="background-color: gray;">Начать установку</button>
             </div>
 
             <div id="download-container" class="download-container hidden">
@@ -57,10 +57,9 @@
                 <a href="http://127.0.0.1:3000/site/index.html" target="_blank" class="social-btn">Website</a>
             </div>
             
-            <!-- <div class="launcher-credits">
-                <span>Launcher by LEVRO</span>
-                <span>v1.0.0</span>
-            </div> -->
+            <div class="launcher-credits">
+                <span id="game-version-display"></span> 
+            </div>
 
         </div>
 
@@ -87,7 +86,7 @@
 
             <div class="setting-item">
                 <label>Сброс настроек</label>
-                <p class="setting-desc">Это сбросит путь к игре и все настройки лаунчера. Приложение перезагрузится.</p>
+                <p class="setting-desc"> Это <b style="color: #910202;">сбросит</b> путь к игре и все настройки лаунчера. <br>Лаунчер перезагрузится.</p>
                 <button id="reset-settings-btn" class="btn-danger">Сбросить все настройки</button>
             </div>
             <div id="launch-error-msg" class="error-message hidden"></div>
