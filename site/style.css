@@ -3,9 +3,6 @@ body {
     background-color: #1a1a1a;
     color: #f0e5d1;
     margin: 0;
-    background-image: url('https://i.imgur.com/8QjZgJj.jpg');
-    background-attachment: fixed;
-    background-size: cover;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -52,6 +49,7 @@ nav a:hover {
 
 .main-content {
     background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 15px rgba(189, 0, 0, 0.6);
     margin-top: 20px;
     margin-bottom: 50px;
     padding: 30px;
@@ -122,6 +120,8 @@ h2 {
 }
 .download-button:hover {
     background: #9a0000;
+    box-shadow: 0 0 55px rgba(154, 0, 0, 0.7);
+    transform: scale(1.01);
 }
 
 footer {
@@ -267,6 +267,8 @@ nav a.active {
 
 .btn-contact:hover {
     background: #9a0000;
+    box-shadow: 0 0 55px rgba(154, 0, 0, 0.7);
+    transform: scale(1.01);
 }
 
 .main-content section {
@@ -274,12 +276,13 @@ nav a.active {
 }
 
 #hero {
-    background-image: url('https://i.imgur.com/KqW8v6o.jpeg');
+    background-image: url('https://images2.alphacoders.com/509/thumb-1920-509156.jpg'); /* needs to be changed to a local image later */
+    backdrop-filter: blur(555px);
     background-size: cover;
     background-position: center 30%;
     
     background-color: rgba(0, 0, 0, 0.5);
-    background-blend-mode: multiply;
+    background-blend-mode: darken;
 
     border: 2px solid #7a0000;
     padding: 60px 40px;
@@ -318,6 +321,8 @@ nav a.active {
 }
 .hero-cta:hover {
     background: #9a0000;
+    box-shadow: 0 0 55px rgba(154, 0, 0, 0.7);
+    transform: scale(1.01);
 }
 
 .features-grid {
@@ -346,6 +351,30 @@ nav a.active {
     color: #ccc;
     line-height: 1.5;
     margin: 0;
+}
+
+.btn-dossier {
+    display: inline-block;
+    margin-top: 15px; 
+    padding: 8px 20px;
+    
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    
+    color: #f0e5d1;
+    background: transparent;
+    border: 1px solid #7a0000; 
+    
+    transition: all 0.2s ease;
+}
+
+.btn-dossier:hover {
+    background: #7a0000;
+    color: #fff;
+    border-color: #7a0000;
+    box-shadow: 0 0 55px rgba(122, 0, 0, 0.7);
 }
 
 a {
