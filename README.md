@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img width="700" alt="Главный экран лаунчера" src="https://github.com/user-attachments/assets/9c4bc0ca-79b8-4ef0-bf6b-421adb399ab4" />
+  <img width="700" alt="Главный экран лаунчера" src="https://github.com/user-attachments/assets/1ec3e203-1464-45ff-85ab-6e2ffced31de" />
 </p>
 
 <p align="center">
@@ -107,10 +107,10 @@
 <table align="center">
   <tr>
     <td align="center"><img width="420" alt="Новости" src="https://github.com/user-attachments/assets/ac857230-a0a0-487f-8861-844b6dc797bd"><br><b>Новости</b></td>
-    <td align="center"><img width="420" alt="Обновление" src="https://github.com/user-attachments/assets/bff8d04b-2292-49a4-8768-c0fd5f384547"><br><b>Проверка версии</b></td>
+    <td align="center"><img width="420" alt="Обновление" src="https://github.com/user-attachments/assets/a344d675-247e-40ca-b59b-665177cb4e0d"><br><b>Проверка версии</b></td>
   </tr>
   <tr>
-    <td align="center"><img width="420" alt="Установка" src="https://github.com/user-attachments/assets/af579de4-3b3e-441c-a491-1d6b04b7030b"><br><b>Прогресс-бар</b></td>
+    <td align="center"><img width="420" alt="Установка" src="https://github.com/user-attachments/assets/c5c4c37c-88c2-40bc-94dc-92810f313354"><br><b>Прогресс-бар</b></td>
     <td align="center"><img width="420" alt="Настройки" src="https://github.com/user-attachments/assets/45e2aade-bfbc-4c62-ae9e-0d607311e600"><br><b>Настройки</b></td>
   </tr>
 </table>
@@ -119,11 +119,11 @@
 
 <table align="center">
   <tr>
-    <td align="center"><img width="420" alt="Главная сайта" src="https://github.com/user-attachments/assets/c9742e23-fe35-4b04-aaa9-0f6d80b5bb17"><br><b>Главная страница</b></td>
-    <td align="center"><img width="420" alt="Сообщество" src="https://github.com/user-attachments/assets/8d2b5f0f-2500-4b46-9af7-4fce16836840"><br><b>Сообщество (Досье и галерея)</b></td>
+    <td align="center"><img width="420" alt="Главная сайта" src="https://github.com/user-attachments/assets/1c8d1608-b465-470b-b73a-aa54b8e5c1a4"><br><b>Главная страница</b></td>
+    <td align="center"><img width="420" alt="Сообщество" src="https://github.com/user-attachments/assets/fd622694-4d3e-48d3-9c6b-c011a81d21a7"><br><b>Сообщество (Досье и галерея)</b></td>
   </tr>
   <tr>
-    <td align="center"><img width="420" alt="Как играть" src="https://github.com/user-attachments/assets/52b7b0aa-11f4-4bc6-9318-a49a25c05035"><br><b>Как начать</b></td>
+    <td align="center"><img width="420" alt="Как играть" src="https://github.com/user-attachments/assets/cea7f95d-b802-4325-bd57-a538d7f4dce1"><br><b>Как начать</b></td>
     <td align="center"><img width="420" alt="Новости сайта" src="https://github.com/user-attachments/assets/4d93d6b2-8735-4ddb-9750-e2dea649dd92"><br><b>Лента новостей (Сайт)</b></td>
   </tr>
 </table>
