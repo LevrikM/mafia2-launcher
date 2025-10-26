@@ -1,7 +1,7 @@
 # Mafia II Online - Custom Launcher
 
 <p align="center">
-  <strong>Атмосферный лаунчер для РП-проекта "Mafia II Online" (Разработано LEVRO)</strong>
+  <strong>Атмосферный лаунчер для РП-проекта "Mafia II Online"</strong>
 </p>
 
 <p align="center">
@@ -96,7 +96,7 @@
     ```
 3.  Готовый установщик будет находиться в папке:
     ```
-    /launcher/out/make/squirrel.windows/x64/
+    /launcher/out/make/nsis/x64/
     ```
 ---
 

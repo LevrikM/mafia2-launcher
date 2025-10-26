@@ -40,6 +40,7 @@ function createWindow() {
     height: 600,
     resizable: false,
     frame: false,
+    maximizable: false,
     icon: path.join(__dirname, 'icon.ico'),
     webPreferences: {
       nodeIntegration: true,

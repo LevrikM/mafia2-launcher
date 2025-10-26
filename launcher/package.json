@@ -1,6 +1,6 @@
 {
   "name": "mafia2-launcher",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Launcher for Mafia 2 ONLINE",
   "main": "main.js",
   "scripts": {
@@ -24,16 +24,44 @@
       },
       "makers": [
         {
-          "name": "@electron-forge/maker-squirrel",
+          "name": "@electron-addons/electron-forge-maker-nsis",
           "config": {
-            "name": "Mafia2Launcher",
-            "setupIcon": "icon.ico"
+            "name": "Mafia II Online Launcher",
+            "setupIcon": "icon.ico",
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true
           }
-        },
-        {
-          "name": "@electron-forge/maker-zip"
         }
       ]
     }
+  },
+  "build": {
+    "appId": "com.example.Mafia2Launcher",
+    "asar": true,
+    "nsis": {
+            "installerHeaderIcon": "icon.ico",
+            "installerIcon": "icon.ico",
+            "uninstallerIcon": "icon.ico",
+            "oneClick": true,
+            "allowToChangeInstallationDirectory": false,
+            "createDesktopShortcut": true,
+            "runAfterFinish": true,
+            "guid": "Mafia II Online Launcher",
+            "artifactName": "Mafia_II_Online_Launcher_Setup.exe",
+            "shortcutName": "Mafia II Online Launcher",
+            "uninstallDisplayName": "Mafia II Online Launcher",
+
+            "perMachine": true,
+            "createStartMenuShortcut": true
+          
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  },
+  "dependencies": {
+    "@electron-addons/electron-forge-maker-nsis": "^7.0.2"
   }
 }
