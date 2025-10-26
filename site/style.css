@@ -276,7 +276,7 @@ nav a.active {
 }
 
 #hero {
-    background-image: url('https://images2.alphacoders.com/509/thumb-1920-509156.jpg'); /* needs to be changed to a local image later */
+    background-image: url('./assets/index/index_background.png'); 
     backdrop-filter: blur(555px);
     background-size: cover;
     background-position: center 30%;
