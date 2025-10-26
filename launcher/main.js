@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, net, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, net, shell, session} = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { exec } = require('child_process');
@@ -88,21 +88,61 @@ ipcMain.handle('get-game-status', async () => {
   }
 });
 
-ipcMain.handle('select-install-folder', async () => {
-  const { canceled, filePaths } = await dialog.showOpenDialog({
-    title: 'Выберите папку для установки игры',
-    properties: ['openDirectory']
-  });
 
-  if (canceled) {
-    return { status: 'canceled' };
-  }
+ipcMain.handle('select-install-folder', async (event) => {
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+        title: 'Выберите папку для установки ИЛИ папку с уже установленной игрой', 
+        properties: ['openDirectory']
+    });
 
-  const newInstallPath = filePaths[0];
-  const settings = loadSettings();
-  saveSettings({ ...settings, installPath: newInstallPath, gamePath: null, currentVersion: null });
+    if (canceled) {
+        return { status: 'canceled' };
+    }
 
-  return { status: 'folder_selected', path: newInstallPath };
+    const selectedPath = filePaths[0]; 
+    const installDirName = "Mafia II Online";
+    const potentialGameExeName = 'mafia2.exe'; 
+
+    let finalInstallPath = ''; 
+    let finalGamePath = '';   
+    let baseInstallPath = ''; 
+
+
+    if (path.basename(selectedPath).toLowerCase() === installDirName.toLowerCase()) {
+        finalInstallPath = selectedPath; 
+        finalGamePath = path.join(finalInstallPath, potentialGameExeName);
+        baseInstallPath = selectedPath; 
+    } else {
+
+        finalInstallPath = path.join(selectedPath, installDirName);
+        finalGamePath = path.join(finalInstallPath, potentialGameExeName);
+        baseInstallPath = selectedPath; 
+    }
+
+
+    const settings = loadSettings();
+
+    try {
+        await fs.promises.access(finalGamePath, fs.constants.R_OK);
+        saveSettings({
+            ...settings,
+            installPath: finalInstallPath, 
+            gamePath: finalGamePath,      
+            currentVersion: settings.currentVersion
+        });
+        return { status: 'found', path: finalGamePath, version: settings.currentVersion };
+
+    } catch (error) {
+        saveSettings({
+            ...settings,
+            installPath: baseInstallPath,
+            gamePath: null,
+            currentVersion: null
+        });
+
+
+        return { status: 'folder_selected', path: baseInstallPath };
+    }
 });
 
 ipcMain.on('launch-game', (event) => {
@@ -179,24 +219,98 @@ ipcMain.handle('get-news', async () => {
     }
 });
 
-ipcMain.on('start-fake-download', (event, latestVersion) => {
+ipcMain.on('start-real-download', async (event, latestVersion) => {
     const settings = loadSettings();
-    if (!settings.installPath) return;
+    const selectedPath = settings.installPath; 
+    if (!selectedPath) {
+        event.reply('download-error', 'Папка для установки не выбрана!');
+        return;
+    }
 
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress += Math.random() * 10;
-        if (progress > 100) progress = 100;
-        
-        event.reply('download-progress', progress);
+    const installDirName = "Mafia II Online";
+    const targetInstallPath = path.join(selectedPath, installDirName); 
 
-        if (progress === 100) {
-            clearInterval(interval);
-            const fakeGameExePath = path.join(settings.installPath, 'mafia2.exe');
-            saveSettings({ ...settings, gamePath: fakeGameExePath, currentVersion: latestVersion || BASE_INSTALL_VERSION });
-            event.reply('install-complete'); 
+    try {
+        await fs.promises.mkdir(targetInstallPath, { recursive: true });
+    } catch (error) {
+        console.error('Не удалось создать папку установки:', error);
+        event.reply('download-error', `Ошибка: Не удалось создать папку ${installDirName}. Проверьте права доступа.`);
+        return;
+    }
+
+    const filesToDownload = [
+        'site/game_files/mafia2.exe',
+        'site/game_files/data.pak',
+        'site/game_files/image.png'
+    ];
+
+    const totalFiles = filesToDownload.length;
+    let downloadedFiles = 0;
+    const downloadSession = session.defaultSession;
+
+    event.reply('download-progress-update', { progress: 0, text: `Подготовка к загрузке ${totalFiles} файлов в ${installDirName}...` });
+
+    const downloadFile = (fileUrlPath) => new Promise((resolve, reject) => {
+        const url = `http://127.0.0.1:3000/${fileUrlPath}`;
+        const fileName = path.basename(fileUrlPath);
+
+
+        const savePath = path.join(targetInstallPath, fileName); 
+
+        downloadSession.downloadURL(url);
+        downloadSession.once('will-download', (e, item, webContents) => {
+            item.setSavePath(savePath);
+            item.on('updated', (evt, state) => {
+                if (state === 'progressing') {
+                    const fileProgress = item.getTotalBytes() ? (item.getReceivedBytes() / item.getTotalBytes() * 100) : 0;
+                    event.reply('download-progress-update', {
+                        progress: (downloadedFiles / totalFiles) * 100,
+                        text: `Загрузка (${downloadedFiles + 1}/${totalFiles}): ${fileName} (${fileProgress.toFixed(1)}%)`
+                    });
+                } else if (state === 'interrupted') {
+                    reject(new Error(`Загрузка ${fileName} прервана`));
+                }
+            });
+            item.once('done', (evt, state) => {
+                if (state === 'completed') {
+                    downloadedFiles++;
+                    event.reply('download-progress-update', {
+                        progress: (downloadedFiles / totalFiles) * 100,
+                        text: `Файл ${fileName} загружен (${downloadedFiles}/${totalFiles})`
+                    });
+                    resolve();
+                } else {
+                    reject(new Error(`Не удалось загрузить ${fileName}: ${state}`));
+                }
+            });
+        });
+    });
+
+    try {
+        for (const fileUrlPath of filesToDownload) {
+            await downloadFile(fileUrlPath);
         }
-    }, 300);
+
+        const gameExePath = path.join(targetInstallPath, 'mafia2.exe'); 
+        saveSettings({ 
+            ...settings, 
+            installPath: targetInstallPath,
+            gamePath: gameExePath, 
+            currentVersion: latestVersion || BASE_INSTALL_VERSION 
+        });
+
+        event.reply('install-complete');
+
+    } catch (error) {
+        console.error('Ошибка во время загрузки:', error);
+        event.reply('download-error', `Ошибка загрузки: ${error.message}`);
+    } finally {
+        downloadSession.removeAllListeners('will-download');
+    }
+});
+
+ipcMain.on('download-error', (event, message) => {
+    console.error("Download Error (from renderer):", message);
 });
 
 ipcMain.handle('select-game-exe', async () => {
@@ -224,12 +338,15 @@ ipcMain.on('start-update', (event, newVersion) => {
     progress += Math.random() * 15;
     if (progress > 100) progress = 100;
 
-    event.reply('download-progress', progress);
+    event.reply('download-progress-update', { 
+      progress: progress, 
+      text: `Обновление... ${Math.round(progress)}%` 
+  });
 
     if (progress === 100) {
       clearInterval(interval);
       saveSettings({ ...settings, currentVersion: newVersion });
-      event.reply('update-complete');
+      event.reply('install-complete');
     }
   }, 250);
 });

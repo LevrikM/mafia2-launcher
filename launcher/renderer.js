@@ -117,12 +117,12 @@ function updateUI(status) {
         updateGameBtn.textContent = `Обновить до ${latestGameVersion}`;
       }
       pathDisplay.textContent = `${status.path} (${status.version || '???'})`;
-      gameVersionDisplay.textContent = `Версия игры: ${status.version || 'оффлайн'}`;
+      gameVersionDisplay.textContent = `Версия игры: ${status.version || '---'}`;
       break;
     
     case 'folder_selected':
       setupContainer.classList.remove('hidden');
-      setupStatusText.textContent = `Установить в: ${status.path}`;
+      setupStatusText.textContent = `Установить в: ${status.path}` + '\\Mafia II Online';
       startDownloadBtn.disabled = false;
       selectPathBtn.textContent = 'Изменить папку';
       startDownloadBtn.style.backgroundColor = '#7a0000';
@@ -148,8 +148,6 @@ function updateUI(status) {
   }
 }
 
-
-
 launchGameBtn.addEventListener('click', () => {
   errorMsg.classList.add('hidden');
   ipcRenderer.send('launch-game');
@@ -171,7 +169,7 @@ selectPathBtn.addEventListener('click', async () => {
 startDownloadBtn.addEventListener('click', () => {
   setupContainer.classList.add('hidden');
   downloadContainer.classList.remove('hidden');
-  ipcRenderer.send('start-fake-download', latestGameVersion);
+  ipcRenderer.send('start-real-download', latestGameVersion);
 });
 
 changePathBtn.addEventListener('click', async () => {
@@ -221,22 +219,26 @@ resetSettingsBtn.addEventListener('click', () => {
 
 
 
-ipcRenderer.on('download-progress', (event, progress) => {
-  const percent = Math.round(progress);
-  progressBar.style.width = `${percent}%`;
-  progressText.textContent = `${percent}%`;
+ipcRenderer.on('download-progress-update', (event, update) => {
+    const percent = Math.round(update.progress);
+    progressBar.style.width = `${percent}%`;
+    progressText.textContent = update.text || `${percent}%`; 
+});
+
+ipcRenderer.on('download-error', (event, message) => {
+    downloadContainer.classList.add('hidden'); 
+    setupContainer.classList.remove('hidden'); 
+    
+    setupStatusText.textContent = `Ошибка: ${message}`; 
+    startDownloadBtn.disabled = false; 
 });
 
 ipcRenderer.on('install-complete', () => {
-  downloadContainer.classList.add('hidden');
-  progressText.textContent = 'Установка завершена!';
-  initializeApp();
-});
+    console.log('Install/Update complete signal received.'); 
+    downloadContainer.classList.add('hidden');
+    progressText.textContent = 'Завершено!'; 
 
-ipcRenderer.on('update-complete', () => {
-  downloadContainer.classList.add('hidden');
-  progressText.textContent = 'Обновление завершено!';
-  initializeApp();
+    initializeApp(); 
 });
 
 ipcRenderer.on('launch-error', (event, message) => {
