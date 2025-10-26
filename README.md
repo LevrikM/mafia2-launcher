@@ -1,11 +1,15 @@
-# Mafia II Online - Custom Launcher
+<p align="right">
+  <a href="README.md">English</a> | <a href="README_RU.md">Русский</a>
+</p>
+
+<h1 align="center"> Mafia II Online - Custom Launcher + Website</h1>
 
 <p align="center">
-  <strong>Атмосферный лаунчер для РП-проекта "Mafia II Online"</strong>
+  <strong>Atmospheric launcher and website for the "Mafia II Online" RP project</strong>
 </p>
 
 <p align="center">
-  <img width="700" alt="Главный экран лаунчера" src="https://github.com/user-attachments/assets/1ec3e203-1464-45ff-85ab-6e2ffced31de" />
+  <img width="700" alt="Launcher main screen" src="https://github.com/user-attachments/assets/1ec3e203-1464-45ff-85ab-6e2ffced31de" />
 </p>
 
 <p align="center">
@@ -18,29 +22,29 @@
 
 ---
 
-## 🚀 О проекте
+## 🚀 About The Project
 
-Этот репозиторий содержит код для кастомного лаунчера, созданного на **Electron**, и простого бэкенд-сайта для него. Лаунчер разработан с нуля в стиле Mafia II и включает в себя весь необходимый функционал для РП-проекта.
+This repository contains the code for a custom launcher built with **Electron** and a simple backend website for it. The launcher was developed from scratch in the style of Mafia II and includes all the necessary functionality for an RP project.
 
-### 🌟 Основные возможности
+### 🌟 Key Features
 
-* **Динамические новости:** Лаунчер загружает новости и список версий прямо с подключенного сайта (`/site/api/news.json`).
-* **Проверка версий:** Автоматически сравнивает локальную версию игры с последней версией на сервере и предлагает "Обновить".
-* **Установка игры:** Включает (пока) фейковую логику установки: выбор папки, "загрузка" с прогресс-баром и сохранение пути.
-* **Панель настроек:**
-    * Изменение пути к игре.
-    * Галочка "Закрывать лаунчер при запуске".
-    * Поле для кастомных параметров запуска (например, `-windowed`).
-    * Полный сброс настроек с перезагрузкой.
-* **Кастомный дизайн:** Весь интерфейс, включая рамку окна, кнопки (свернуть, закрыть) и скроллбар, стилизован под атмосферу Mafia II.
+* **Dynamic News:** The launcher loads news and version lists directly from the connected website (`/site/api/news.json`).
+* **Version Check:** Automatically compares the local game version with the latest version on the server and prompts to "Update".
+* **Game "Installation":** Includes (currently) fake installation logic: folder selection, "downloading" with a progress bar, and saving the path.
+* **Settings Panel:**
+    * Change game path.
+    * Checkbox "Close launcher on game start".
+    * Field for custom launch parameters (e.g., `-windowed`).
+    * Full settings reset with a reload.
+* **Custom Design:** The entire interface, including the window frame, buttons (minimize, close), and scrollbar, is styled to match the Mafia II atmosphere.
 
 ---
 
-## 🛠️ Используемые технологии
+## 🛠️ Technologies Used
 
-* **Electron:** Для создания десктопного приложения из веб-технологий.
-* **Node.js (fs, path, net):** Для работы с файловой системой (сохранение настроек) и сетью (загрузка новостей).
-* **HTML5 / CSS3 / JavaScript:** Для всего интерфейса и логики.
+* **Electron:** To create a desktop application using web technologies.
+* **Node.js (fs, path, net):** For working with the file system (saving settings) and network (loading news).
+* **HTML5 / CSS3 / JavaScript:** For the entire interface and logic.
 
 <p align="center">
   <img alt="Electron" src="https://img.shields.io/badge/Electron-191970?style=for-the-badge&logo=electron&logoColor=white">
@@ -52,84 +56,90 @@
 
 ---
 
-## 📦 Установка и запуск
+## 📦 Installation and Launch
 
-Проект разделен на две части: `/launcher` (само приложение) и `/site` (сайт для новостей).
+The project is divided into two parts: `/launcher` (the application itself) and `/site` (the website for news).
 
-### 1. Запуск сайта (Бэкенд)
+### 1. Running the Website (Backend)
 
-Сайт статичный, но для загрузки `news.json` через `http://` (вместо `file://`) его нужно подавать через локальный сервер.
+The site is static, but to load `news.json` via `http://` (instead of `file://`), it needs to be served through a local server.
 
-1.  Установите `serve` (если его нет):
+1.  Install `serve` (if you don't have it):
     ```bash
     npm install -g serve
     ```
-2.  Запустите сервер из **корневой папки проекта**:
+2.  Run the server from the **project root folder**:
     ```bash
     serve
     ```
-    *После этого сайт будет доступен по адресу `http://localhost:3000` (или похожему), а API новостей — по `http://localhost:3000/site/api/news.json`.*
+    *After this, the site will be available at `http://localhost:3000` (or similar), and the news API at `http://localhost:3000/site/api/news.json`.*
 
-### 2. Запуск лаунчера
+### 2. Running the Launcher (Development)
 
-1.  Перейдите в папку лаунчера:
+1.  Navigate to the launcher directory:
     ```bash
     cd launcher
     ```
-2.  Установите зависимости:
+2.  Install dependencies:
     ```bash
     npm install
     ```
-3.  Запустите лаунчер в режиме разработки:
+3.  Run the launcher in development mode:
     ```bash
     npm start
     ```
-### 3. Сборка лаунчера (Создание .exe)
 
-Проект использует **Electron Forge** для автоматической сборки приложения в `.exe` установщик.
+### 3. Building the Launcher (Creating .exe)
 
-1.  **Иконка:** Убедитесь, что в папке `/launcher` лежит файл `icon.ico`. Он будет автоматически использован для `.exe` файла и установщика (конфигурация уже в `package.json`).
+The project uses **Electron Forge** to automatically build the application into an `.exe` installer.
 
-2.  Выполните команду в терминале (в папке `/launcher`):
+1.  **Icon:** Ensure the `icon.ico` file is present in the `/launcher` directory. It will be automatically used for the `.exe` file and the installer (configuration is already in `package.json`).
+
+2.  Run the command in the terminal (in the `/launcher` directory):
     ```bash
     npm run make
     ```
-3.  Готовый установщик будет находиться в папке:
+3.  The finished installer will be located in the folder:
     ```
     /launcher/out/make/nsis/x64/
     ```
+
 ---
 
-## 🖼️ Галерея
+## 🖼️ Gallery
 
-<h3 align="center">Интерфейс Лаунчера</h3>
-
-<table align="center">
-  <tr>
-    <td align="center"><img width="420" alt="Новости" src="https://github.com/user-attachments/assets/ac857230-a0a0-487f-8861-844b6dc797bd"><br><b>Новости</b></td>
-    <td align="center"><img width="420" alt="Обновление" src="https://github.com/user-attachments/assets/a344d675-247e-40ca-b59b-665177cb4e0d"><br><b>Проверка версии</b></td>
-  </tr>
-  <tr>
-    <td align="center"><img width="420" alt="Установка" src="https://github.com/user-attachments/assets/c5c4c37c-88c2-40bc-94dc-92810f313354"><br><b>Прогресс-бар</b></td>
-    <td align="center"><img width="420" alt="Настройки" src="https://github.com/user-attachments/assets/45e2aade-bfbc-4c62-ae9e-0d607311e600"><br><b>Настройки</b></td>
-  </tr>
-</table>
-
-<h3 align="center">Интерфейс Сайта</h3>
+<h3 align="center">Launcher Interface</h3>
 
 <table align="center">
   <tr>
-    <td align="center"><img width="420" alt="Главная сайта" src="https://github.com/user-attachments/assets/1c8d1608-b465-470b-b73a-aa54b8e5c1a4"><br><b>Главная страница</b></td>
-    <td align="center"><img width="420" alt="Сообщество" src="https://github.com/user-attachments/assets/fd622694-4d3e-48d3-9c6b-c011a81d21a7"><br><b>Сообщество (Досье и галерея)</b></td>
+    <td align="center"><img width="420" alt="News" src="https://github.com/user-attachments/assets/ac857230-a0a0-487f-8861-844b6dc797bd"><br><b>News Feed</b></td>
+    <td align="center"><img width="420" alt="Update Prompt" src="https://github.com/user-attachments/assets/a344d675-247e-40ca-b59b-665177cb4e0d"><br><b>Version Check</b></td>
   </tr>
   <tr>
-    <td align="center"><img width="420" alt="Как играть" src="https://github.com/user-attachments/assets/cea7f95d-b802-4325-bd57-a538d7f4dce1"><br><b>Как начать</b></td>
-    <td align="center"><img width="420" alt="Новости сайта" src="https://github.com/user-attachments/assets/4d93d6b2-8735-4ddb-9750-e2dea649dd92"><br><b>Лента новостей (Сайт)</b></td>
+    <td align="center"><img width="420" alt="Installation Progress" src="https://github.com/user-attachments/assets/c5c4c37c-88c2-40bc-94dc-92810f313354"><br><b>Progress Bar</b></td>
+    <td align="center"><img width="420" alt="Settings Panel" src="https://github.com/user-attachments/assets/45e2aade-bfbc-4c62-ae9e-0d607311e600"><br><b>Settings</b></td>
   </tr>
 </table>
 
+<h3 align="center">Website Interface</h3>
 
-## 📞 Связь со мной
+<table align="center">
+  <tr>
+    <td align="center"><img width="420" alt="Website Home" src="https://github.com/user-attachments/assets/1c8d1608-b465-470b-b73a-aa54b8e5c1a4"><br><b>Home Page</b></td>
+    <td align="center"><img width="420" alt="Community Page" src="https://github.com/user-attachments/assets/fd622694-4d3e-48d3-9c6b-c011a81d21a7"><br><b>Community (Dossier & Gallery)</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img width="420" alt="Rules Page" src="https://github.com/user-attachments/assets/6f32aee4-55cb-4521-b54d-6b14a4b5d37b"><br><b>Rules</b></td>
+    <td align="center"><img width="420" alt="How to Play Page" src="https://github.com/user-attachments/assets/cea7f95d-b802-4325-bd57-a538d7f4dce1"><br><b>How to Start</b></td>
+  </tr>
+   <tr>
+    <td align="center"><img width="420" alt="Website News Feed" src="https://github.com/user-attachments/assets/4d93d6b2-8735-4ddb-9750-e2dea649dd92"><br><b>News Feed (Website)</b></td>
+  </tr>
+</table>
+
+---
+
+## 📞 Contact Me
 
 * **Discord:** `m.levro`
-*  **Telegram**: <a href="https://t.me/xwkwx">`t.me/xwkwx`</a></p>
+* **Telegram**: <a href="https://t.me/xwkwx">`t.me/xwkwx`</a></p>
