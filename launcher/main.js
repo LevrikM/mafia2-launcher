@@ -234,6 +234,37 @@ ipcMain.on('start-update', (event, newVersion) => {
   }, 250);
 });
 
+ipcMain.handle('get-ticker-text', async () => {
+    
+    const fetchTicker = () => new Promise((resolve, reject) => {
+        const url = 'http://127.0.0.1:3000/site/api/ticker.txt';
+        const request = net.request(url);
+        let responseData = '';
+
+        request.on('response', (response) => {
+            if (response.statusCode !== 200) {
+                return reject(new Error(`HTTP Error: ${response.statusCode}`));
+            }
+            response.on('data', (chunk) => {
+                responseData += chunk.toString('utf-8');
+            });
+            response.on('end', () => {
+                resolve(responseData);
+            });
+            response.on('error', (error) => reject(error));
+        });
+        request.on('error', (error) => reject(error));
+        request.end();
+    });
+
+    try {
+        const text = await fetchTicker();
+        return { status: 'ok', text: text };
+    } catch (error) {
+        console.error('Ошибка загрузки бегущей строки:', error);
+        return { status: 'error', message: 'Не удалось загрузить срочные сообщения.' };
+    }
+});
 
 ipcMain.handle('get-all-settings', async () => {
     return loadSettings();

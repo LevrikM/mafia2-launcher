@@ -41,6 +41,11 @@ body {
     letter-spacing: 2px;
 }
 
+.title .highlight {
+    color: #7a0000;
+}
+
+
 .title-bar-buttons {
     -webkit-app-region: no-drag;
 }
@@ -61,7 +66,7 @@ body {
 .left-panel {
     width: 40%;
     height: 100%;
-    padding: 50px 20px 20px 20px;
+    padding: 65px 20px 20px 20px;
     box-sizing: border-box;
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(2px);
@@ -84,6 +89,7 @@ body {
     overflow-y: auto;
     font-size: 14px;
     padding-right: 10px;
+    padding-left: 10px;
 }
 
 .update-item {
@@ -121,7 +127,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 30px;
+    padding-top: 65px;
     box-sizing: border-box;
     position: relative;
 }
@@ -197,7 +203,7 @@ body {
 }
 
 #minimize-btn {
-    padding-top: 5px;
+    padding-top: 5px; 
     font-weight: bold;
 }
 
@@ -236,6 +242,14 @@ body {
     background: #777;
 }
 
+
+.btn-primary:disabled {
+    background: #555; 
+    cursor: not-allowed; 
+    opacity: 0.7; 
+}
+
+
 .progress-bar-outline {
     width: 100%;
     height: 30px;
@@ -265,9 +279,12 @@ body {
     backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
-    align-items: center;
-    z-index: 90;
+    align-items: flex-start;
+    padding-top: 10px;
+    z-index: 101;
+    overflow-y: hidden; 
 }
+
 .modal-content {
     background: #1a1a1a;
     border: 2px solid #7a0000;
@@ -326,7 +343,7 @@ body {
     text-align: center;
 }
 
-.launcher-credits {
+.right-panel .launcher-credits {
     position: absolute;
     bottom: 10px;
     right: 15px;
@@ -334,10 +351,28 @@ body {
     font-size: 12px;
     color: #f0e5d1;
     opacity: 0.5;
-    display: flex;
-    gap: 10px;
     user-select: none;
 }
+
+.modal-content .launcher-credits {
+    font-family: 'Merriweather', serif;
+    font-size: 12px;
+    color: #f0e5d1;
+    opacity: 0.5;
+    user-select: none;
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+    border-top: 1px solid #444;
+    padding-top: 15px;
+}
+
+.setting-desc b {
+    color: #910202;
+    font-weight: bold;
+}
+
 
 .setting-item.checkbox-item {
     display: flex;
@@ -348,7 +383,6 @@ body {
     margin: 0;
     font-size: 16px;
 }
-
 
 .setting-item input[type="text"] {
     width: 100%;
@@ -377,8 +411,42 @@ body {
     cursor: pointer;
     margin: 5px;
     transition: all 0.2s ease;
-    background: #a00; 
+    background: #a00;
 }
 .btn-danger:hover {
     background: #c00;
+}
+
+.ticker-wrap {
+    position: fixed;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    background-color: #7a0000;
+    border-bottom: 2px solid #111;
+    color: #fff;
+    padding: 5px 0;
+    z-index: 50;
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.ticker-text {
+    display: inline-block;
+    padding-left: 100%;
+    font-family: 'Merriweather', serif;
+    font-size: 14px;
+    font-weight: bold;
+    animation: ticker-scroll 30s linear infinite;
+}
+
+@keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+.ticker-wrap:hover .ticker-text {
+    /* animation-play-state: paused; */
+    cursor: default;
 }

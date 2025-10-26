@@ -35,13 +35,19 @@ const resetSettingsBtn = document.getElementById('reset-settings-btn');
 
 // News section
 const newsContent = document.getElementById('updates-content');
-
+const tickerText = document.getElementById('ticker-text');
+const tickerWrap = document.querySelector('.ticker-wrap');
 
 document.addEventListener('DOMContentLoaded', () => {
   loadNews().then(() => {
     initializeApp();
   });
+
+  loadTickerText();
+  setInterval(loadTickerText, 60000);
 });
+
+
 
 ipcRenderer.invoke('get-app-version').then((version) => {
     const versionSpan = document.getElementById('app-version');
@@ -75,6 +81,22 @@ async function loadNews() {
   } else {
     newsContent.innerHTML = `<p style="color: #c00;">${response.message}</p>`;
   }
+}
+
+async function loadTickerText() {
+    if (!tickerWrap || !tickerText) return;
+
+    const response = await ipcRenderer.invoke('get-ticker-text');
+
+    if (response.status === 'ok' && response.text && response.text.trim() !== '') {
+        tickerWrap.classList.remove('hidden'); 
+        tickerText.textContent = response.text.trim() + ' \u00A0 \u00A0 \u00A0 ';
+        tickerText.style.animation = ''; 
+        tickerText.style.paddingLeft = '100%'; 
+    } else {
+        tickerWrap.classList.add('hidden'); 
+        tickerText.textContent = ''; 
+    }
 }
 
 function updateUI(status) {
@@ -171,7 +193,8 @@ settingsBtn.addEventListener('click', async () => {
     settingsModal.classList.remove('hidden');
 
     const settings = await ipcRenderer.invoke('get-all-settings');
-
+    errorMsg.textContent = '';
+    errorMsg.classList.add('hidden');
     closeOnLaunchCheck.checked = settings.closeOnLaunch || false;
     launchArgsInput.value = settings.launchArgs || "";
 });

@@ -381,3 +381,125 @@ a {
     color: #7a0000;
 
 }
+
+
+.rules-page {
+
+    background: url('./assets/rules/background.png');
+    background-position: center top;
+    background-size:auto 10%;
+    color: #333; 
+    padding: 50px;
+}
+
+.rule-section-card {
+    background: rgba(255, 255, 255, 0.6); 
+    border: 1px solid #aaa;
+    border-left: 5px solid #7a0000; 
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+}
+
+.rules-page h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 1.5px;
+    color: #363636; 
+    margin-top: 0; 
+    margin-bottom: 20px;
+    border-bottom: 2px solid #7a0000;
+    padding-bottom: 8px;
+}
+.rules-page h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px; 
+    letter-spacing: 1px;
+    color: #444;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+.rules-page p, .rules-page li {
+    line-height: 1.7;
+    margin-bottom: 12px;
+    color: #222; 
+    font-size: 16px; 
+}
+.rules-page ul {
+    list-style: square;
+    margin-left: 25px;
+    padding-left: 0;
+}
+.rules-page code { 
+    background: rgba(0, 0, 0, 0.1);
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace; 
+    color: #000;
+    border: 1px solid #ccc;
+}
+.rules-page hr {
+    border: none;
+    border-top: 1px dashed #aaa; 
+    margin: 40px 0;
+}
+
+
+.accordion {
+    margin-bottom: 25px;
+}
+.accordion-header {
+    background: #444; 
+    border: 1px solid #222;
+    color: #f0e5d1; 
+    cursor: pointer;
+    padding: 12px 20px;
+    width: 100%;
+    text-align: left;
+    outline: none;
+    transition: background-color 0.2s ease;
+    border-radius: 3px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.accordion-header h3 {
+    margin: 0;
+    border: none;
+    padding: 0;
+    font-size: 26px; 
+    color: #fff;
+    display: inline-block; 
+}
+.accordion-header:hover {
+    background-color: #555;
+}
+
+.accordion-header::after {
+    content: '▶';
+    font-size: 14px;
+    color: #f0e5d1;
+    float: right;
+    margin-left: 10px;
+    transition: transform 0.2s ease;
+    line-height: 30px; 
+}
+.accordion-header.active::after {
+    transform: rotate(90deg); 
+}
+
+.accordion-content {
+    padding: 0 20px;
+    background: rgba(255, 255, 255, 0.6); 
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    border: 1px solid #555;
+    border-top: none;
+    border-radius: 0 0 3px 3px;
+}
+.accordion-content p, .accordion-content ul {
+    margin-top: 15px;
+    color: #111; 
+}
+.accordion-content li {
+    color: #333;
+}
