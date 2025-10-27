@@ -1,5 +1,5 @@
 <p align="right">
-  <a href="README.md">English</a> | <a href="README_RU.md">Русский</a>
+  <a href="README.md"><b>English</b></a> | <a href="README_RU.md">Русский</a>
 </p>
 
 <h1 align="center"> Mafia II Online - Custom Launcher + Website</h1>
@@ -30,7 +30,7 @@ This repository contains the code for a custom launcher built with **Electron** 
 
 * **Dynamic News:** The launcher loads news and version lists directly from the connected website (`/site/api/news.json`).
 * **Version Check:** Automatically compares the local game version with the latest version on the server and prompts to "Update".
-* **Game "Installation":** Includes (currently) fake installation logic: folder selection, "downloading" with a progress bar, and saving the path.
+* **Game "Installation":** Includes installation logic: folder selection, "downloading" with a progress bar, and saving the path.
 * **Settings Panel:**
     * Change game path.
     * Checkbox "Close launcher on game start".
