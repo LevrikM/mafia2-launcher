@@ -1,6 +1,6 @@
 {
   "name": "mafia2-launcher",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Launcher for Mafia 2 ONLINE",
   "main": "main.js",
   "scripts": {
@@ -13,14 +13,14 @@
   "license": "ISC",
   "devDependencies": {
     "@electron-forge/cli": "^7.4.0",
-    "@electron-forge/maker-squirrel": "^7.4.0",
     "@electron-forge/maker-zip": "^7.4.0",
     "electron": "^30.0.1"
   },
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "icon.ico"
+        "icon": "icon.ico",
+        "asar": true
       },
       "makers": [
         {
