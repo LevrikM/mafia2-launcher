@@ -65,9 +65,10 @@ async function initializeApp() {
 
 async function loadNews() {
   const response = await ipcRenderer.invoke('get-news');
-  latestGameVersion = response.latestVersion;
+  
 
   if (response.status === 'ok') {
+    latestGameVersion = response.latestVersion;
     newsContent.innerHTML = '';
     response.data.forEach(item => {
       const newsItem = document.createElement('div');
@@ -110,11 +111,13 @@ function updateUI(status) {
 
   switch (status.status) {
     case 'found':
-      if (status.version === latestGameVersion) {
+      if (status.version === latestGameVersion && latestGameVersion !== null) {
         launchGameBtn.classList.remove('hidden');
       } else {
-        updateGameBtn.classList.remove('hidden');
-        updateGameBtn.textContent = `Обновить до ${latestGameVersion}`;
+        if (latestGameVersion !== null) {
+          updateGameBtn.classList.remove('hidden');
+          updateGameBtn.textContent = `Обновить до ${latestGameVersion}`;
+        }
       }
       pathDisplay.textContent = `${status.path} (${status.version || '???'})`;
       gameVersionDisplay.textContent = `Версия игры: ${status.version || '---'}`;

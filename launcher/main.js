@@ -329,26 +329,77 @@ ipcMain.handle('select-game-exe', async () => {
   return { status: 'found', path: newPath };
 });
 
-ipcMain.on('start-update', (event, newVersion) => {
-  const settings = loadSettings();
-  if (!settings.gamePath) return;
 
-  let progress = 0;
-  const interval = setInterval(() => {
-    progress += Math.random() * 15;
-    if (progress > 100) progress = 100;
+ipcMain.on('start-update', async (event, newVersion) => {
+    const settings = loadSettings();
 
-    event.reply('download-progress-update', { 
-      progress: progress, 
-      text: `Обновление... ${Math.round(progress)}%` 
-  });
-
-    if (progress === 100) {
-      clearInterval(interval);
-      saveSettings({ ...settings, currentVersion: newVersion });
-      event.reply('install-complete');
+    const installPath = settings.installPath; 
+    
+    if (!installPath || !settings.gamePath) {
+        event.reply('download-error', 'Ошибка обновления: Путь к игре не найден!');
+        return;
     }
-  }, 250);
+
+    const filesToDownload = [
+        'site/game_files/mafia2.exe',
+        'site/game_files/data.pak',
+        'site/game_files/image.png' 
+    ];
+
+    const totalFiles = filesToDownload.length;
+    let downloadedFiles = 0;
+    const downloadSession = session.defaultSession;
+
+    event.reply('download-progress-update', { progress: 0, text: `Подготовка к обновлению до ${newVersion}...` });
+
+    const downloadFile = (fileUrlPath) => new Promise((resolve, reject) => {
+        const url = `http://127.0.0.1:3000/${fileUrlPath}`; 
+        const fileName = path.basename(fileUrlPath); 
+        const savePath = path.join(installPath, fileName); 
+
+        downloadSession.downloadURL(url);
+        downloadSession.once('will-download', (e, item, webContents) => {
+            item.setSavePath(savePath); 
+            item.on('updated', (evt, state) => {
+                if (state === 'progressing') {
+                    const fileProgress = item.getTotalBytes() ? (item.getReceivedBytes() / item.getTotalBytes() * 100) : 0;
+                    event.reply('download-progress-update', {
+                        progress: (downloadedFiles / totalFiles) * 100,
+                        text: `Обновление (${downloadedFiles + 1}/${totalFiles}): ${fileName} (${fileProgress.toFixed(1)}%)`
+                    });
+                } else if (state === 'interrupted') {
+                    reject(new Error(`Загрузка обновления ${fileName} прервана`));
+                }
+            });
+            item.once('done', (evt, state) => {
+                if (state === 'completed') {
+                    downloadedFiles++;
+                    event.reply('download-progress-update', {
+                        progress: (downloadedFiles / totalFiles) * 100,
+                        text: `Файл ${fileName} обновлен (${downloadedFiles}/${totalFiles})`
+                    });
+                    resolve(); 
+                } else {
+                    reject(new Error(`Не удалось обновить ${fileName}: ${state}`));
+                }
+            });
+        });
+    });
+
+    try {
+        for (const fileUrlPath of filesToDownload) {
+            await downloadFile(fileUrlPath);
+        }
+
+        saveSettings({ ...settings, currentVersion: newVersion });
+        event.reply('install-complete');
+
+    } catch (error) {
+        console.error('Ошибка во время обновления:', error);
+        event.reply('download-error', `Ошибка обновления: ${error.message}`); 
+    } finally {
+        downloadSession.removeAllListeners('will-download');
+    }
 });
 
 ipcMain.handle('get-ticker-text', async () => {

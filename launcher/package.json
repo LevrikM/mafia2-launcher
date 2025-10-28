@@ -1,6 +1,6 @@
 {
   "name": "mafia2-launcher",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Launcher for Mafia 2 ONLINE",
   "main": "main.js",
   "scripts": {
